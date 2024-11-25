@@ -9,7 +9,7 @@ import { InitialLoadingComponent } from "./components/initial-loading/initial-lo
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, TableComponent, InitialLoadingComponent],
+  imports: [RouterOutlet, TableComponent, InitialLoadingComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -11,9 +11,21 @@ import { RouterLink } from '@angular/router';
 export class ButtonComponent {
   @Input() link: string = "";
   @Input() text: string = "";
+  sportsNameTranslated: string = "";
 console: any;
 
-
+ngOnInit(): void {
+  switch(this.text){
+    case "Basketball":
+      this.sportsNameTranslated = "Basquetbol";
+      break;
+    case "Voleyball":
+      this.sportsNameTranslated = "Voleibol";
+      break;
+    case "Futbol":
+      this.sportsNameTranslated = "Fútbol";
+      break;
+  }}
 
   redirect(){
     console.log("Redirecting...");

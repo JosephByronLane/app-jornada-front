@@ -7,7 +7,7 @@ import { SeparatorComponent } from "../../components/separator/separator.compone
 @Component({
   selector: 'app-basketball',
   standalone: true,
-  imports: [CommonModule, MenubarComponent, TableComponent, SeparatorComponent],
+  imports: [MenubarComponent, TableComponent, SeparatorComponent],
   templateUrl: './basketball.component.html',
   styleUrl: './basketball.component.css'
 })

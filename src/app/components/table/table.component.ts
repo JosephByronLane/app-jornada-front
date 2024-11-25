@@ -3,12 +3,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Database, ref, set, onValue, get } from '@angular/fire/database';
 import { sportsEntry } from '../../interfaces/sportsEntry';
 import { SeparatorComponent } from "../separator/separator.component";
+import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, SeparatorComponent],
+  imports: [SeparatorComponent, CommonModule],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css'
+  styleUrl: './table.component.css',
 })
 export class TableComponent implements OnInit {
   allowedSports = ["Basketball", "Voleyball", "Futbol"]
@@ -16,11 +19,24 @@ export class TableComponent implements OnInit {
   isValidSports :Boolean = false;
   fetchedData: sportsEntry[] = [];
   dataArray: sportsEntry[] = [];
-  studentKey: number = 0;
+  sportsNameTranslated: String = "";
   isDataLoaded:Boolean = true;
   constructor(private db: Database){
   }
   ngOnInit(): void {
+    switch(this.sport){
+      case "Basketball":
+        this.sportsNameTranslated = "Basquetbol";
+        break;
+      case "Voleyball":
+        this.sportsNameTranslated = "Voleibol";
+        break;
+      case "Futbol":
+        this.sportsNameTranslated = "Fútbol";
+        break;
+    }
+
+
     if(this.sport === null){
       this.isValidSports = false;
       console.error("Sport is required");
@@ -50,7 +66,7 @@ export class TableComponent implements OnInit {
         this.dataArray = Object.entries(this.fetchedData).map(([key, value]) => {
           return { ...value, key: key };
         });
-        
+
         this.sortData();
         this.isDataLoaded = true;
       } else {
