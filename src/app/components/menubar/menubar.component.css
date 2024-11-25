@@ -1,0 +1,42 @@
+.root{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+*{
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.logo{
+    padding: 10px;
+    max-height: 100px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.navbar{
+    background-color: #061f57 ;
+}
+
+.nav-item{
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    /* make the underline disappear */
+}
+
+.nav-item a{
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-nav{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 40px;
+    flex-direction: row;
+    list-style-type: none;
+
+}

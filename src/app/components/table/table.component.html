@@ -1,0 +1,29 @@
+<div class="table-container">
+  <div *ngIf="isDataLoaded">
+    <h2>Top 15 jugadores de:</h2>
+    <h1 class="blue-text"> {{ sport }} </h1>
+    <app-separator></app-separator>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Matricula</th>
+          <th>Puntuacion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let score of dataArray; index as i" [ngClass]="{'gray-row': i % 2 === 0, 'white-row': i % 2 !== 0}">
+          <td>{{ i + 1 }}</td>
+          <td>{{ score.name }}</td>
+          <td>{{ score.key }}</td>
+          <td>{{ score.score }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="!isDataLoaded">
+    <!-- make a loading spinner -->
+    <div class="spinner"></div>
+  </div>
+  </div>

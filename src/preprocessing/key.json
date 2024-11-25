@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "app-registro-jornada",
+  "private_key_id": "fb3811bd73623e986b4e91a109a20f3d3df49206",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCz9wo2LsiysN6m\nMzqBvdzGMHBHQ/W8EhkgcfwcYHgu+ayoB1NLKMGxA4HlxmprwCl7AlTbQ1haey37\n2LFI+p8QVM+zF1uQppExDH7PCnPdfH36msgYoZcKtr6FrcUbvyPQiMyrGPDzrFlH\n07KBCJ2XwkkNw3EuwSQbt45tcdzjqBEF9piIxPrq7XKSXYQV+U4kO8V5mfPNQtqV\nRWd7e4IHek899Z+Em6sZZukOWT/HX/uNK0cZr88qflKXzGqR1FgF62ccs18Eg91w\nSlDxwkMmKS64iWpU4qvoqxqRJP2lqLPBhdFnEurQLJrQCCMWOZzw01t3IThyGL+u\nlIIzPH6ZAgMBAAECggEAEotxFfGZj4WtATC45V23PlpczOXdO1VyGWclikG2oMCX\nC3RAdQzsyLI1KdmvEGNrjYLJU77g1Ty+7vt+vqfKHwNeU8ojDrOGCqk1orLPtbx6\nZDScTKLPebR9yttZOxQQkLtIET7aCtdxFncOJ0BysjdnEnACsxqxVISEZ2rFpFUl\nD0nDTerrIV+qt2RM2blU6SClq/9Hr95XAyshPdGInKfkDz8QovYhnKawTaZVZsW2\nHHG1gwNO5y4nQwWCKv6lfKSOE8qjQDB2WdB9lgL9ra0hG+FczWFJP5GC0voJ6XcF\nXPZvip7SxuoZ+oBLo1VnH0YoZHTzF2I1W6MsrMWUcQKBgQDXWmfQkj+4HLoqprSE\n7RUZHEFAmLeRODex6W1Kf/kVqPvBqXWChTwlXdWNoUUuXBl7l9KrNgJGJsprCm9H\n9VA+5uSlLm77wLp+51LJ6zUTll3Tzzo9BToyCJAPZ0DKuMBe8KJLOe+13snvC1x+\nuVq9v7RnZC4yBV+9g8fZk7kmrwKBgQDV7rkwf3VM2jl+iuheTk/DhQNo2m3lRJp9\nk6dswPoEUb0MLBymMgNpUrr35Oq1l1T44GCsFhaxZ6/rjRT3IBlVS1Ng7Pn5a/qn\nR/ZJXpNQL+i3UO4B8UQMd9UAYScVhzr2gOMM1U4qdxa4vCTDTyJN2vJ8/y/Lep+O\nqDoSgzmBNwKBgQCH5EF8SL0ypdYIEff5pU1Z8g1vAK9dUNc8SiswBr8cHuz2kMNZ\nIFAK2EJow+pOzck6x1wls8gNkm7KyuPbyX3go3yGi113OW+1oq0IQ4bTnGAKx0pd\ntQ27AtI9Fg+5nImvnzMaOy37WuGcGVQ9lyMed3kUgQ/xepimkyCqOGBuewKBgQCA\nU4KipNIoF38FeS2J5E/UaKVy8BObw1somLmFcvyGOsG723oT90w0kXu114szAmPm\nJjHXCCj0oc3U7fv1gTuw/k41hfEsvKjOT0xdFm4nW5Ws4M7kO2UmVXtfjudy8ntc\nAlQwDoOk1Wq7xaAHyCA7s2phsHFrDVNIr4CmOjD0YQKBgQDDcnOwSbKeECrEN1RZ\nMP5iQWf7nEQJPkEQKFV/QJcrckb3mjPTiuDyFacsxFY/tUKJubY2wDEgQEOTRZIh\nEHeDj0IlL8zdGJeUc8Fa1E3iEtC/QW/ncK8FFyp8bSGtAwNbMH+EpPG7cDoQEI1H\nMFe9ffipTqeKYNlITiT+iaTJbA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-tmjci@app-registro-jornada.iam.gserviceaccount.com",
+  "client_id": "104324835652595131212",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-tmjci%40app-registro-jornada.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
