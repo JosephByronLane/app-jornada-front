@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let score of dataArray; index as i" [ngClass]="{'gray-row': i % 2 === 0, 'white-row': i % 2 !== 0}">
+        <tr *ngFor="let score of dataArray; index as i" [@rowAnimation] [ngClass]="{'gray-row': i % 2 === 0, 'white-row': i % 2 !== 0}">
           <td>{{ i + 1 }}</td>
           <td>{{ score.name }}</td>
           <td>{{ score.key }}</td>
