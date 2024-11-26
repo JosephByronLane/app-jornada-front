@@ -1,0 +1,38 @@
+name: Docker Build & Upload
+
+on:
+  push:
+    branches:
+      #change this to main later, bruh
+      - main
+
+
+jobs:
+
+  # Build and push the Docker image to Docker Hub
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Log in to Docker Hub using secrets stored in GitHub
+      - name: Docker Hub Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/app-jornada-front .
+
+      # Push the Docker image to Docker Hub
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front
+
+  

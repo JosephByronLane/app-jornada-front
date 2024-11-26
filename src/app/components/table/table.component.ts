@@ -25,7 +25,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   ]
 })
 export class TableComponent implements OnInit {
-  allowedSports = ["Basketball", "Voleyball", "Futbol"]
+  allowedSports = ["Basketball", "Voleyball", "Football"]
   @Input() sport: string | null = null;
   isValidSports :Boolean = false;
   fetchedData: sportsEntry[] = [];
@@ -42,7 +42,7 @@ export class TableComponent implements OnInit {
       case "Voleyball":
         this.sportsNameTranslated = "Voleibol";
         break;
-      case "Futbol":
+      case "Football":
         this.sportsNameTranslated = "Fútbol";
         break;
     }
@@ -102,7 +102,7 @@ export class TableComponent implements OnInit {
       });
 
 
-    this.dataArray.slice(0, 15);
+    this.dataArray.slice(0, 10);
   }
 
 }
