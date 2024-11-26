@@ -35,4 +35,25 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front
 
-  
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.INSTANCE_IP }} >> ~/.ssh/known_hosts
+
+    - name: Deploy and restart Docker container
+      run: |
+        ssh -o StrictHostKeyChecking=no user@your-server-ip << EOF
+          docker pull xx/xx
+          docker stop xx || true
+          docker rm xx || true
+          docker run -d --name xx -p 80:80 xx/xx:latest
+        EOF
