@@ -30,6 +30,7 @@ export class TableComponent implements OnInit {
   isValidSports :Boolean = false;
   fetchedData: sportsEntry[] = [];
   dataArray: sportsEntry[] = [];
+  finalData: sportsEntry[] = [];
   sportsNameTranslated: String = "";
   isDataLoaded:Boolean = true;
   constructor(private db: Database){
@@ -102,7 +103,7 @@ export class TableComponent implements OnInit {
       });
 
 
-    this.dataArray.slice(0, 10);
+    this.finalData =  this.dataArray.slice(0, 15);
   }
 
 }
