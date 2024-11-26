@@ -52,8 +52,8 @@ jobs:
     - name: Deploy and restart Docker container
       run: |
         ssh -o StrictHostKeyChecking=no root@${{ secrets.INSTANCE_IP }} << EOF
-          docker pull xx/xx
-          docker stop xx || true
-          docker rm xx || true
-          docker run -d --name xx -p 80:80 xx/xx:latest
+          docker pull joemama7/app-jornada-front:latest
+          docker stop app-jornada-front || true
+          docker rm app-jornada-front || true
+          docker run -d --name app-jornada-front -p 80:80 joemama7/app-jornada-front:latest
         EOF
