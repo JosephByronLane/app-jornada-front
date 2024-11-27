@@ -33,7 +33,7 @@ jobs:
 
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
+          sudo docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
 
       - name: Get Hetzner Load Balancer Targets
         id: get_targets
