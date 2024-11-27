@@ -33,14 +33,12 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
 
 
-    
+          
       - name: Get Hetzner Servers
-        id: get_servers
         run: |
-          RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" \\
-            "https://api.hetzner.cloud/v1/servers")
+          RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" "https://api.hetzner.cloud/v1/servers")
           echo "$RESPONSE"
-          SERVERS=$(echo "$RESPONSE" | jq -r '.servers[] | select(.name | contains("app-jornada-front-")) | .private_net[0].ip')
+          SERVERS=$(echo "$RESPONSE" | jq -r '.servers[] | select(.name | contains("rester-")) | .private_net[0].ip') 
           echo "servers=$SERVERS" >> $GITHUB_ENV
 
       - name: Deploy to Each Target
