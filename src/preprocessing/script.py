@@ -9,19 +9,23 @@ output_data = {}
 #abrimos el .csv
 with open(csv_file, 'r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';')
-    next(reader)  #nos saltamos el primer row (que esta vacio)
     next(reader)  # nos saltamos los headers(los asignaremos manualmente abajo)
     
-    for row in reader:
-        if len(row) < 5 or not row[2]:  #checamos si tiene todos los campos requeridos, y si el campo de correo existe.
-            continue
-        email = row[2]
-        key = email.split('@')[0]  #sacamos la matricula del correo, separandolo en 2: uno antes de la @ y uno despues.
+    for rows in reader:
+        row = rows[0].split(',')  #separamos los datos por comas
+        email = row[3]
+        print(email)
+        email_no_quotes = row[3].replace('"', '')
+        print(email_no_quotes)
+        email_no_slash = email_no_quotes.replace('/', '')
+        key = email_no_slash.split('@')[0]  #sacamos la matricula del correo, separandolo en 2: uno antes de la @ y uno despues.
+        #remove "'s from the email, please
+
         output_data[key] = {
-            "Nombre": row[1].strip() + row[2].strip() + row[3].strip(),
-            "Correo": row[4].strip(),
+            "Nombre": row[0].strip() + " " + row[1].strip() + " " + row[2].strip(),
+            "Correo":email_no_slash,
             "Registro de pago por": row[3].strip(),
-            "Fecha": row[4].strip()
+            "Fecha": row[3].strip()
         }
 
 # escribimos el json

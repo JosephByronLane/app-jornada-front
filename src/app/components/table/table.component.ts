@@ -40,8 +40,8 @@ export class TableComponent implements OnInit {
       case "Basketball":
         this.sportsNameTranslated = "Basquetbol";
         break;
-      case "Voleyball":
-        this.sportsNameTranslated = "Voleibol";
+      case "Beisbol":
+        this.sportsNameTranslated = "Béisbol";
         break;
       case "Football":
         this.sportsNameTranslated = "Fútbol";

@@ -1,60 +1,59 @@
-name: Docker Build & Upload
+name: Deploy to Hetzner Load Balancer Targets
 
 on:
   push:
     branches:
-      #change this to main later, bruh
       - main
 
-
 jobs:
-
-  # Build and push the Docker image to Docker Hub
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted  # Ensure this runner has network access to the private instances
 
     steps:
-      # Checkout the repository
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Log in to Docker Hub using secrets stored in GitHub
-      - name: Docker Hub Login
-        uses: docker/login-action@v2
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Build the Docker image
-      - name: Build Docker image
+      - name: Install jq
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/app-jornada-front .
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-      # Push the Docker image to Docker Hub
-      - name: Push Docker image to Docker Hub
+      - name: Build Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/app-jornada-front:latest .
+      
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/app-jornada-front:latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Get Hetzner Load Balancer Targets
+        id: get_targets
+        run: |
+          LB_ID=2188685  # Replace with your actual Load Balancer ID
+          RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" \
+            "https://api.hetzner.cloud/v1/load_balancers/${LB_ID}/targets")
+          echo "$RESPONSE"
+          TARGETS=$(echo "$RESPONSE" | jq -r '.targets[].ip')
+          echo "targets=$TARGETS" >> $GITHUB_OUTPUT
 
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.INSTANCE_IP }} >> ~/.ssh/known_hosts
-
-    - name: Deploy and restart Docker container
-      run: |
-        ssh -o StrictHostKeyChecking=no root@${{ secrets.INSTANCE_IP }} << EOF
-          docker pull joemama7/app-jornada-front:latest
-          docker stop app-jornada-front || true
-          docker rm app-jornada-front || true
-          docker run -d --name app-jornada-front -p 80:80 joemama7/app-jornada-front:latest
-        EOF
+      - name: Deploy to Each Target
+        run: |
+          for TARGET_IP in ${{ steps.get_targets.outputs.targets }}
+          do
+            echo "Deploying to $TARGET_IP"
+            ssh -o StrictHostKeyChecking=no user@$TARGET_IP << 'EOF'
+              docker pull joemama7/app-jornada-front:latest
+              docker stop app-jornada-front || true
+              docker rm app-jornada-front || true
+              docker run -d --name app-jornada-front -p 80:80 joemama7/app-jornada-front:latest
+            EOF
+          done
