@@ -31,11 +31,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          sudo docker build -t ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest .
+          sudo docker build -t ${{ secrets.DOCKER_USERNAME }}/app-jornada-front .
 
       - name: Push Docker Image to Docker Hub
         run: |
-          sudo docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
+          sudo docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front
 
       - name: Get Hetzner Load Balancer Targets
         id: get_targets
