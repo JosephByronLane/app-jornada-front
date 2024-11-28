@@ -79,5 +79,7 @@ jobs:
               echo "Starting the new container"
               docker run -d --name ${{secrets.DOCKER_CONTAINER_NAME}} ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
               echo "Container started successfully"
+              exit
           EOF
           done
+          echo "All deployments completed successfully!"
