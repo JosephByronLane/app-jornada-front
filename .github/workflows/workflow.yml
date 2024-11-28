@@ -63,7 +63,7 @@ jobs:
           for TARGET_IP in $servers; do
             echo "Deploying to $TARGET_IP"
             echo "Connecting to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
-            ssh -tt -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
+            ssh -tt -vvv -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               echo "Connected succesfully to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
               # Docker commands
               echo "Pulling the latest image"
@@ -76,7 +76,7 @@ jobs:
               docker rm ${{secrets.DOCKER_CONTAINER_NAME}} || true
               echo "Container removed successfully"
               echo "Starting the new container"
-              docker run -d --name ${{secrets.DOCKER_CONTAINER_NAME}} ${DOCKER_USERNAME}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
+              docker run -d --name ${{secrets.DOCKER_CONTAINER_NAME}} ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
               echo "Container started successfully"
           EOF
           done
