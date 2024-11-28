@@ -26,38 +26,39 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest .
 
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
 
         
       - name: Get Hetzner Servers
         run: |
           RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" "https://api.hetzner.cloud/v1/servers")
-          echo "$RESPONSE"  # Optional: Remove after debugging
-          SERVERS=$(echo "$RESPONSE" | jq -r '.servers[] | select(.name | contains("app-jornada-front-")) | .private_net[0].ip') 
+          SERVERS=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .private_net[0].ip' | paste -sd ' ' -)
           echo "servers=$SERVERS" >> $GITHUB_ENV
-
+          SERVER_NAMES=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .name' | paste -sd ', ' -)
+          echo "Selected Servers: $SERVER_NAMES"
+        
       - name: Debug Servers Variable
         run: |
           echo "Servers: $SERVERS"
-
+        
       - name: Add Bastion Host to known_hosts
         run: |
-          ssh-keyscan -H bastion_host_ip >> ~/.ssh/known_hosts
-
+          ssh-keyscan -H ${{ secrets.BASTION_IP }} >> ~/.ssh/known_hosts
+        
       - name: Deploy to Servers
-        if: env.SERVERS != ''
+        if: env.servers != ''
         run: |
           for TARGET_IP in $SERVERS; do
             echo "Deploying to $TARGET_IP"
-            ssh -J root@ ${{ secrets.BASTION_IP  }} user@$TARGET_IP << 'EOF'
+            ssh -J root@${{ secrets.BASTION_IP }} user@$TARGET_IP << 'EOF'
               # Docker commands
-              docker pull  ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
-              docker stop app-jornada-front || true
-              docker rm app-jornada-front || true
-              docker run -d --name app-jornada-front  ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
+              docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
+              docker stop ${{ secrets.DOCKER_CONTAINER_NAME }} || true
+              docker rm ${{ secrets.DOCKER_CONTAINER_NAME }} || true
+              docker run -d --name ${{ secrets.DOCKER_CONTAINER_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
             EOF
           done
