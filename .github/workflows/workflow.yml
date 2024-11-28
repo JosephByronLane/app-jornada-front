@@ -32,25 +32,32 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
 
-
-          
+        
       - name: Get Hetzner Servers
         run: |
           RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" "https://api.hetzner.cloud/v1/servers")
-          echo "$RESPONSE"
+          echo "$RESPONSE"  # Optional: Remove after debugging
           SERVERS=$(echo "$RESPONSE" | jq -r '.servers[] | select(.name | contains("app-jornada-front-")) | .private_net[0].ip') 
           echo "servers=$SERVERS" >> $GITHUB_ENV
 
-      - name: Deploy to Each Target
+      - name: Debug Servers Variable
         run: |
-          for TARGET_IP in ${{ env.servers }}
-          do
-            ssh -o StrictHostKeyChecking=no user@5.161.195.190 << 'EOF'
-              ssh -o StrictHostKeyChecking=no user@$TARGET_IP << 'INNER_EOF'
-                docker pull joemama7/app-jornada-front:latest
-                docker stop app-jornada-front || true
-                docker rm app-jornada-front || true
-                docker run -d --name app-jornada-front -p 80:80 joemama7/app-jornada-front:latest
-              INNER_EOF
+          echo "Servers: $SERVERS"
+
+      - name: Add Bastion Host to known_hosts
+        run: |
+          ssh-keyscan -H bastion_host_ip >> ~/.ssh/known_hosts
+
+      - name: Deploy to Servers
+        if: env.SERVERS != ''
+        run: |
+          for TARGET_IP in $SERVERS; do
+            echo "Deploying to $TARGET_IP"
+            ssh -J root@ ${{ secrets.BASTION_IP  }} user@$TARGET_IP << 'EOF'
+              # Docker commands
+              docker pull  ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
+              docker stop app-jornada-front || true
+              docker rm app-jornada-front || true
+              docker run -d --name app-jornada-front  ${{ secrets.DOCKER_USERNAME }}/app-jornada-front:latest
             EOF
           done
