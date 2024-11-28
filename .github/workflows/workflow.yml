@@ -54,7 +54,7 @@ jobs:
         run: |
           for TARGET_IP in $SERVERS; do
             echo "Deploying to $TARGET_IP"
-            ssh -J root@${{ secrets.BASTION_IP }} user@$TARGET_IP << 'EOF'
+            ssh -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP << 'EOF'
               # Docker commands
               docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
               docker stop ${{ secrets.DOCKER_CONTAINER_NAME }} || true
