@@ -36,10 +36,13 @@ jobs:
       - name: Get Hetzner Servers
         run: |
           RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" "https://api.hetzner.cloud/v1/servers")
+          # Extract server IPs based on container name
           SERVERS=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .private_net[0].ip' | paste -sd ' ' -)
           echo "servers=$SERVERS" >> $GITHUB_ENV
+          # Extract and echo server names for debugging
           SERVER_NAMES=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .name' | paste -sd ', ' -)
           echo "Selected Servers: $SERVER_NAMES"
+        
         
       - name: Debug Servers Variable
         run: |
@@ -54,11 +57,11 @@ jobs:
         run: |
           for TARGET_IP in $SERVERS; do
             echo "Deploying to $TARGET_IP"
-            ssh -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP << 'EOF'
+            ssh -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               # Docker commands
-              docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
-              docker stop ${{ secrets.DOCKER_CONTAINER_NAME }} || true
-              docker rm ${{ secrets.DOCKER_CONTAINER_NAME }} || true
-              docker run -d --name ${{ secrets.DOCKER_CONTAINER_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CONTAINER_NAME }}:latest
-            EOF
+              docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
+              docker stop ${{secrets.DOCKER_CONTAINER_NAME}} || true
+              docker rm ${{secrets.DOCKER_CONTAINER_NAME}} || true
+              docker run -d --name ${{secrets.DOCKER_CONTAINER_NAME}} ${DOCKER_USERNAME}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
+          EOF
           done
