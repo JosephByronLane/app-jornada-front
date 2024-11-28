@@ -63,7 +63,7 @@ jobs:
           for TARGET_IP in $servers; do
             echo "Deploying to $TARGET_IP"
             echo "Connecting to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
-            ssh -tt -vvv -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
+            ssh -tt -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               echo "Connected succesfully to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
               ls -la /home
               # Docker commands
