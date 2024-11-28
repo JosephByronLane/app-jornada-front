@@ -65,6 +65,7 @@ jobs:
             echo "Connecting to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
             ssh -tt -vvv -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               echo "Connected succesfully to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
+              ls -la /home
               # Docker commands
               echo "Pulling the latest image"
               docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
