@@ -49,7 +49,7 @@ jobs:
         
       - name: Debug Servers Variable
         run: |
-          echo "Servers: $SERVERS"
+          echo "Servers: $servers"
         
       - name: Add Bastion Host to known_hosts
         run: |
@@ -58,7 +58,9 @@ jobs:
       - name: Deploy to Servers             
         if: env.servers != ''
         run: |
-          for TARGET_IP in $SERVERS; do
+          # Debug to verify the servers environment variable
+          echo "Servers from env.servers: $servers"
+          for TARGET_IP in $servers; do
             echo "Deploying to $TARGET_IP"
             ssh -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               # Docker commands
