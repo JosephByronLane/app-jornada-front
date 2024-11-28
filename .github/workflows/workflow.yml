@@ -37,9 +37,15 @@ jobs:
         run: |
           RESPONSE=$(curl -s -H "Authorization: Bearer ${{ secrets.HETZNER_API_TOKEN }}" "https://api.hetzner.cloud/v1/servers")
           SERVERS=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .private_net[0].ip' | paste -sd ' ' -)
+          
+          # Fail the workflow if no servers are found
+          if [ -z "$SERVERS" ]; then
+            echo "Error: No servers found matching the criteria." >&2
+            exit 1
+          fi
+          
           echo "servers=$SERVERS" >> $GITHUB_ENV
-          SERVER_NAMES=$(echo "$RESPONSE" | jq -r --arg cname "${{ secrets.DOCKER_CONTAINER_NAME }}" '.servers[] | select(.name | contains($cname + "-")) | .name' | paste -sd ', ' -)
-          echo "Selected Servers: $SERVER_NAMES"
+          echo "Selected Servers: $SERVERS"
         
       - name: Debug Servers Variable
         run: |
@@ -49,7 +55,7 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.BASTION_IP }} >> ~/.ssh/known_hosts
         
-      - name: Deploy to Servers
+      - name: Deploy to Servers             
         if: env.servers != ''
         run: |
           for TARGET_IP in $SERVERS; do
