@@ -65,7 +65,6 @@ jobs:
             echo "Connecting to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
             ssh -tt -J root@${{ secrets.BASTION_IP }} root@$TARGET_IP <<EOF
               echo "Connected succesfully to Bastion at:${{ secrets.BASTION_IP }} and then to $TARGET_IP"
-              ls -la /home
               # Docker commands
               echo "Pulling the latest image"
               docker pull ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
@@ -77,7 +76,7 @@ jobs:
               docker rm ${{secrets.DOCKER_CONTAINER_NAME}} || true
               echo "Container removed successfully"
               echo "Starting the new container"
-              docker run -d --name ${{secrets.DOCKER_CONTAINER_NAME}} ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
+              docker run -d -p 80:80 --name ${{secrets.DOCKER_CONTAINER_NAME}} ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_CONTAINER_NAME}}:latest
               echo "Container started successfully"
               exit
           EOF
