@@ -26,6 +26,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the build output to Nginx's html directory
 COPY --from=build /app/dist/app-jornada-front/browser/ /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
