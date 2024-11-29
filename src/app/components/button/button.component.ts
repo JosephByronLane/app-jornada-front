@@ -19,8 +19,8 @@ ngOnInit(): void {
     case "Basketball":
       this.sportsNameTranslated = "Basquetbol";
       break;
-    case "Voleyball":
-      this.sportsNameTranslated = "Voleibol";
+    case "Beisbol":
+      this.sportsNameTranslated = "Beisbol";
       break;
     case "Futbol":
       this.sportsNameTranslated = "Fútbol";
