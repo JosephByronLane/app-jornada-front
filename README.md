@@ -1,6 +1,6 @@
 # app-jornada-front
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
+<img src="https://github.com/user-attachments/assets/d7e8f1b4-d34a-4f43-bf18-378ac95e85c0" alt="drawing" width="400"/>
 
 Our teacher wanted to do a few games for our schools yearly sports meet thingy, so he asked us to do a phone app that the people at the game's stations can input peoples scores, and a webapge to visualize said scores.
 
