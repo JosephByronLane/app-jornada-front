@@ -81,4 +81,4 @@ jobs:
               exit
           EOF
           done
-          echo "All deployments completed successfully!"
+          echo "All deployments completed successfully"
